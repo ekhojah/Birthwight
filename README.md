@@ -1,2 +1,2 @@
 # Birthwight
-Fina project for PSY6422
+Final project for PSY6422
