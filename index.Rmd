@@ -7,24 +7,54 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)#this library is used  for most graphs and data functions
+library (dplyr)
+library(ggrepel)#this library for the labels on the graphs with the lines to the points they represent
 ```
 
-## R Markdown
+## Birthwights and gastation for smoker and non somker mothers 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+### Research Question
+This dataset contains information like gestational age on new born babies and their mothers who smoked and didn’t.  Here we ask,is there a relationship between gestational age and birthweight?
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r data, include=FALSE} 
+# load data
+read.csv ("C:\\Users\\ekhojah\\OneDrive\\Desktop\\Birthweight_reduced_R.csv")
+# rename data file
+df <- read.csv("C:\\Users\\ekhojah\\OneDrive\\Desktop\\Birthweight_reduced_R.csv")
+attach(df) 
+```
 
-```{r cars}
-summary(cars)
+### Data Origins
+
+You can also embed plots, for example:
+```{r pressure, echo=FALSE}
+head(df)
+```
+
+### Data Preparation
+For the perpose of this project only the information about Birthweight of the newborn babies, Gestation and their mothers who smoked and didn’t will be adress.
+```{r prep, results=TRUE}
+df <- df %>% select (-c(headcirumference,mnocig,mppwt,fage,fedyrs,fnocig,fheight,lowbwt,mage35))#exculde culomns we do not need
+head(df)#show first few raws of the new dataset
+```
+
+### Visulisation 1:
+
+
+```{r gest,results=TRUE}
+
+plot(Gestation,Birthweight,main="Scatterplot of gestational age and birthweight",xlab="Gestation(weeks)",ylab="Birthweight(lbs)")
+abline(lm(Birthweight~Gestation),col='red',lwd=2)
 ```
 
 ## Including Plots
 
 You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
+```{r , echo=FALSE}
 plot(pressure)
+
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
