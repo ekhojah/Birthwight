@@ -6,55 +6,71 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(echo = TRUE)
-library(tidyverse)#this library is used  for most graphs and data functions
-library (dplyr)
-library(ggrepel)#this library for the labels on the graphs with the lines to the points they represent
+knitr::opts_chunk$set(echo = TRUE,fig.show="hold",warning=FALSE,results=TRUE,message=FALSE) 
+
+library(tidyverse)#library for most graphs and data functions
+library (dplyr)#library makes steps of execute the program fast and easy
+library(ggrepel)#library for the labels on the graphs with the lines 
 ```
 
-## Birthwights and gastation for smoker and non somker mothers 
+## Infants birthweight and gestational age for smoker and nonsmoker mothers 
 
-### Research Question
-This dataset contains information like gestational age on new born babies and their mothers who smoked and didn’t.  Here we ask,is there a relationship between gestational age and birthweight?
 
-```{r data, include=FALSE} 
+### Research Questions
+
+Here we ask,is there a relationship between gestational age and birthweight?
+and do smokers have lighter babies?
+
+
+### Data Origins
+
+This dataset consists of details of 42 babies and their parents at birth.You can find this dataset in [Stastutor](http://www.statstutor.ac.uk/topics/r/statistical-analyses-using-r/).
+These data were collected  by the employer's liability insurances in Germany.
+As reported in its resear artical by [Karmaus and Wolf ,1995](https://ehp.niehs.nih.gov/doi/abs/10.1289/ehp.951031120).
+
+Variables meaning:
+Birthweight= Weight of baby by pound (lbs),
+Gestation= Gestation age of baby by (weeks),
+smoker= Mother smokes setuation : 1 = smoker , 0 = non-smoker
+
+
+
+### Data Preparation
+
+```{r data, include=TRUE, results=FALSE}
 # load data
 read.csv ("C:\\Users\\ekhojah\\OneDrive\\Desktop\\Birthweight_reduced_R.csv")
 # rename data file
 df <- read.csv("C:\\Users\\ekhojah\\OneDrive\\Desktop\\Birthweight_reduced_R.csv")
-attach(df) 
 ```
 
-### Data Origins
-
-You can also embed plots, for example:
-```{r pressure, echo=FALSE}
-head(df)
-```
-
-### Data Preparation
-For the perpose of this project only the information about Birthweight of the newborn babies, Gestation and their mothers who smoked and didn’t will be adress.
-```{r prep, results=TRUE}
-df <- df %>% select (-c(headcirumference,mnocig,mppwt,fage,fedyrs,fnocig,fheight,lowbwt,mage35))#exculde culomns we do not need
-head(df)#show first few raws of the new dataset
+To answer the research questions, only the information about birthweight , gestation of the newborn babies and their mothers who smoked and didn’t will be adress.
+```{r prep, include=TRUE,results=TRUE}
+#exclude all except variables we need
+df1 <-df %>% select(-c(id,headcirumference,length,motherage,mnocig,mheight,mppwt,fage,fedyrs,fnocig,fheight,lowbwt,mage35,LowBirthWeight))
+#showe first few rews
+head(df1)
 ```
 
 ### Visulisation 1:
+Here I adress the first question:is there a relationship between gestational age and birthweight?
+```{r gest,include=FALSE}
+attach(df1)#use the birthweight dataset until further notice using attach.
+```
 
-
-```{r gest,results=TRUE}
-
+```{r gestation,results=TRUE,warning=FALSE,message=FALSE}
 plot(Gestation,Birthweight,main="Scatterplot of gestational age and birthweight",xlab="Gestation(weeks)",ylab="Birthweight(lbs)")
 abline(lm(Birthweight~Gestation),col='red',lwd=2)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r , echo=FALSE}
-plot(pressure)
+#save output
+png(filename= "birthwight.png")
 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+There is a positive relationship, as the gestational age increases, so does birthweight. The closer the scatter is to the line, the stronger the relationship is.
+
+
+## Summary
+This data visualisation showes information of birthwight and gastation age for 42 babies and the effects of thier mothers smoking siuation.
+From visulisation 1, we can see there are no large outliers wich could have large impact on the strength of a relationship.  
