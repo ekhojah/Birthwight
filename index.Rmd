@@ -46,7 +46,7 @@ read.csv ("C:\\Users\\ekhojah\\OneDrive\\Desktop\\Birthweight_reduced_R.csv")
 df <- read.csv("C:\\Users\\ekhojah\\OneDrive\\Desktop\\Birthweight_reduced_R.csv")
 ```
 
-To answer the research questions, only the information about birthweight , gestation of the newborn babies and their mothers who smoked and didn’t will be adress.
+To answer the research questions, only the information about **birthweight** , **gestation age** of the newborn babies and their mothers who **smoked** and **didn’t** will be adress.
 ```{r prep, include=TRUE,results=TRUE}
 #exclude all except variables we need
 df1 <-df %>% select(-c(id,headcirumference,length,motherage,mnocig,mheight,mppwt,fage,fedyrs,fnocig,fheight,lowbwt,mage35,LowBirthWeight))
@@ -62,15 +62,38 @@ attach(df1)#use the birthweight dataset until further notice using attach.
 
 ```{r gestation,results=TRUE,warning=FALSE,message=FALSE}
 plot(Gestation,Birthweight,main="Scatterplot of gestational age and birthweight",xlab="Gestation(weeks)",ylab="Birthweight(lbs)")
+
+#Add a regression line to the plot
 abline(lm(Birthweight~Gestation),col='red',lwd=2)
+
 #save output
 png(filename= "birthwight.png")
-
 ```
 
 There is a positive relationship, as the gestational age increases, so does birthweight. The closer the scatter is to the line, the stronger the relationship is.
 
+### Visulisation 2:
+Here I adress the second question:do smokers have lighter babies?
+```{r smoking,include=TRUE}
+#attach labels to the categories 
+smoker<-factor(smoker,c(0,1),labels=c('Non-smoker','Smoker'))
+
+plot(Gestation,Birthweight,col=c('red','blue')[smoker],main='Scatterplot by smoker', pch=c(1,4)[smoker],xlab='Gestation (weeks)',ylab='Birthweight(lbs)')
+legend(x="topleft", legend = levels(smoker), col=c('red','blue'), pch=c(1,4))
+pairs(~Birthweight+Gestation,main='Birth weight scatterplot matrix',col=c('red','blue')[smoker],pch=c(1,4)[smoker])
+
+#save output
+png(filename= "birthwight2.png")
+```
+
+smokers tend to have lighter babies at each gestational age. 
 
 ## Summary
+
 This data visualisation showes information of birthwight and gastation age for 42 babies and the effects of thier mothers smoking siuation.
-From visulisation 1, we can see there are no large outliers wich could have large impact on the strength of a relationship.  
+
+From visulisation 1, we can see there are no large outliers wich could have large impact on the strength of a relationship.
+
+From visualisation 2, we can see a baby increases in weight for each extra week of gestation.
+
+Other varibals of baby birth and mother situation can be visualied in future, like Is there a relationship between over 35’s and low baby weight? 
